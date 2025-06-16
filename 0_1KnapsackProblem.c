@@ -36,7 +36,76 @@ int compareItems(const void *a, const void *b) {
     }
 }
 
+double calculate_bound(int level, int current_weight, int current_value, Item *sorted_items, int n, int W) {
+    if (current_weight>=W) {
+        return 0;
+    }
 
+    double bound = (double)current_value;
+    int remaining_capacity=W-current_weight;
+    int k=level;
+
+    while (k<n && (sorted_items+k)->weight<remaining_capacity) {
+        remaining_capacity-=(sorted_items+k)->weight;
+        bound+=(double)(sorted_items+k)->value;
+        k++;
+    }
+
+    if (k<n && remaining_capacity>0) {
+        bound+=(double)(sorted_items+k)->ratio*remaining_capacity;
+    }
+
+    return bound;
+}
+
+void knapsack_branch_and_bound(int level, int current_weight,
+    int current_value, Item *sorted_items,
+    int n, int W, int *current_select_item) {
+    if (W>=current_weight && current_value>max_profit_global) {
+        max_profit_global=current_weight;
+
+        for (int i=0; i<num_items_global; i++) {
+            *(best_selection_global+i)=0;
+        }
+
+        for (int i=0; i<n; i++) {
+            if (*(current_select_item+i)==1) {
+                *(best_selection_global+(sorted_items+i)->id)=1;
+            }
+        }
+
+    }
+
+    double bound=calculate_bound(level,current_weight,current_value,sorted_items,n,W);
+
+    if (bound<=max_profit_global || level==n) {
+        return;
+    }
+
+    if (current_weight+sorted_items[level].weight<=W) {
+        *(current_select_item+level)=1;
+        knapsack_branch_and_bound(
+            level+1,
+            current_weight+(sorted_items+level)->weight,
+            current_value+(sorted_items+level)->value,
+            sorted_items,
+            n,
+            W,
+            current_select_item
+            );
+        *(current_select_item+level)=0;
+    }
+
+    knapsack_branch_and_bound(
+        level+1,
+        current_weight,
+        current_value,
+        sorted_items,
+        n,
+        W,
+        current_select_item
+        );
+}
 
 void display_item(Item *item,int n) {
     for (int i=0; i<n; i++) {
@@ -69,7 +138,21 @@ void solve_knapsack(Item *original_items, int n, int W) {
 
     qsort(sorted_items,n ,sizeof(Item),compareItems);
 
+    max_profit_global=0;
+    num_items_global=n;
+    best_selection_global=(int *)malloc(num_items_global*sizeof(int));
 
+    if (best_selection_global==NULL) {
+        printf("ÄÚ´æÉêÇë´íÎó£¡");
+        free(sorted_items);
+        exit(1);
+    }
+
+    int *current_select_item=(int *)malloc(n*sizeof(int *));
+
+
+
+    knapsack_branch_and_bound(0,0,0,sorted_items,n,W,)
 
 }
 
@@ -85,7 +168,7 @@ int main() {
         exit(1);
     }
 
-    printf("(id,weight,value,ratio)\n");
+    printf("ÇëÊäÈë(id,weight,value,ratio)\n");
 
     while (i<n){
         scanf("%d,%d,%d,%lf",&id,&weight,&value,&ratio);
