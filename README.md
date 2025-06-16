@@ -19,13 +19,13 @@
 ### 编译项目
 ```bash
 git clone https://github.com/yourusername/knapsack-branch-and-bound.git
-cd 0-1-Knapsack-problem
+cd knapsack-branch-and-bound
 make  # 或手动编译：gcc -o knapsack main.c
 ```
 
 ### 运行程序
 ```bash
-./0-1-Knapsack-problem
+./knapsack
 ```
 按照交互提示：
 1. 输入物品数量和背包容量
@@ -43,6 +43,7 @@ make  # 或手动编译：gcc -o knapsack main.c
 void knapsack_branch_and_bound(int level, int current_weight, 
                              int current_value, Item *sorted_items,
                              int n, int W, int *current_select_item) {
+    // 实现细节...
 }
 ```
 
@@ -56,18 +57,18 @@ void knapsack_branch_and_bound(int level, int current_weight,
 **输入：**
 ```
 输入物品数量和背包容量(n,W): 3,50
-输入物品(id,重量,价值,性价比):
-0,10,60,0
-0,20,100,0
-0,30,120,0
+输入物品(id,重量,价值):
+1,10,60
+2,20,100
+3,30,120
 ```
 
 **输出：**
 ```
 最大价值：220
 选中的物品：
-ID 1(第2个商品)：重量=20，价值=100
-ID 2(第3个商品)：重量=30，价值=120
+ID 1：重量=20，价值=100
+ID 2：重量=30，价值=120
 总重量：50
 ```
 
@@ -78,6 +79,13 @@ ID 2(第3个商品)：重量=30，价值=120
 ├── knapsack.c           # 完整代码
 ├── Makefile             # 构建配置
 └── README.md            # 本文档
+```
+
+## 🧪 测试
+
+运行包含的测试用例：
+```bash
+make test
 ```
 
 ## 🤝 贡献指南
