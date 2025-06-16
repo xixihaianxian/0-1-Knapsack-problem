@@ -19,7 +19,7 @@
 ### 编译项目
 ```bash
 git clone https://github.com/xixihaianxian/0-1-Knapsack-problem.git
-cd knapsack-branch-and-bound
+cd 0-1-Knapsack-problem
 make  # 或手动编译：gcc -o knapsack main.c
 ```
 
