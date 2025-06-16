@@ -62,7 +62,7 @@ void knapsack_branch_and_bound(int level, int current_weight,
     int current_value, Item *sorted_items,
     int n, int W, int *current_select_item) {
     if (W>=current_weight && current_value>max_profit_global) {
-        max_profit_global=current_weight;
+        max_profit_global=current_value;
 
         for (int i=0; i<num_items_global; i++) {
             *(best_selection_global+i)=0;
@@ -149,10 +149,30 @@ void solve_knapsack(Item *original_items, int n, int W) {
     }
 
     int *current_select_item=(int *)malloc(n*sizeof(int *));
+    int total_select_weight=0;
 
+    if (current_select_item==NULL) {
+        printf("内存分配失败！");
+        free(sorted_items);
+        exit(1);
+    }
 
+    knapsack_branch_and_bound(0,0,0,sorted_items,n,W,current_select_item);
 
-    knapsack_branch_and_bound(0,0,0,sorted_items,n,W,)
+    printf("最大的价值是：%d\n",max_profit_global);
+    printf("选取的商品分别是：\n");
+    for (int i=0; i<n; i++) {
+        if (*(best_selection_global+i)==1) {
+            printf("商品id：%d(第%d个商品)，商品weight：%d，商品value：%d\n",i,i+1,(original_items+i)->weight,(original_items+i)->value);
+            total_select_weight+=(sorted_items+i)->weight;
+        }
+    }
+
+    printf("商品的总重量为%d",total_select_weight);
+
+    free(sorted_items);
+    free(current_select_item);
+    free(best_selection_global);
 
 }
 
