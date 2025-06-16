@@ -82,6 +82,8 @@ void knapsack_branch_and_bound(int level, int current_weight,
         return;
     }
 
+    // 选择商品
+
     if (current_weight+sorted_items[level].weight<=W) {
         *(current_select_item+level)=1;
         knapsack_branch_and_bound(
@@ -95,6 +97,8 @@ void knapsack_branch_and_bound(int level, int current_weight,
             );
         *(current_select_item+level)=0;
     }
+
+    // 不选择商品
 
     knapsack_branch_and_bound(
         level+1,
