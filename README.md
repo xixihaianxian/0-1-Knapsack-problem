@@ -18,7 +18,7 @@
 
 ### 编译项目
 ```bash
-git clone https://github.com/yourusername/knapsack-branch-and-bound.git
+git clone https://github.com/xixihaianxian/0-1-Knapsack-problem.git
 cd knapsack-branch-and-bound
 make  # 或手动编译：gcc -o knapsack main.c
 ```
